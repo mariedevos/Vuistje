@@ -12,6 +12,19 @@ const BlogIndex = ({ data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
+      <ul>
+        {data.allMarkdownRemark.edges.map(({ node }) => (
+          <li>
+            <article>
+              <Link to={node.fields.slug}>
+                {" "}
+                <h2>{node.frontmatter.title}</h2>
+              </Link>
+              <p>{node.excerpt}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
     </Layout>
   )
 }
@@ -24,6 +37,20 @@ export const pageQuery = graphql`
       siteMetadata {
         description
         title
+      }
+    }
+    allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            description
+            title
+          }
+          excerpt
+          fields {
+            slug
+          }
+        }
       }
     }
   }
